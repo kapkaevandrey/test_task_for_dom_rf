@@ -9,10 +9,10 @@ from app.services.clients.base import BaseCadastrServiceClient
 class CadastrServiceClient(BaseCadastrServiceClient):
     async def calculate(
         self,
-        cadastar_numbder: str,
+        cadastr_numbder: str,
         latitude: float,
         longitude: float,
-    ) -> Dict[Any]:
+    ) -> Any:
         pass
 
 
@@ -21,12 +21,12 @@ class FakeCadastrServiceClient(BaseCadastrServiceClient):
 
     async def calculate(
         self,
-        cadastar_numbder: str,
+        cadastr_number: str,
         latitude: float,
         longitude: float,
     ) -> Dict[Any]:
         await asyncio.sleep(random.randint(*self.TIME_SECOND_RANGE))
-        return {}
+        return dict(cadastr_number=cadastr_number, latitude=latitude, longitude=longitude)
 
 
 cadastr_client = CadastrServiceClient() if settings.is_prod else FakeCadastrServiceClient()
