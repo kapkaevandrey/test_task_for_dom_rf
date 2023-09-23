@@ -1,0 +1,15 @@
+[flake8]
+extend-ignore = E203
+exclude =
+    .git,
+    __pycache__,
+    infrastructure/,
+    */alembic,
+    */migrations,
+    */settings,
+    settings.py,
+    venv,
+    env,
+    .venv,
+    .github/
+max-line-length = 119
