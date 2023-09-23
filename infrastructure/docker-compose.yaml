@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  backend:
+    container_name: backend
+    build:
+      context: ..
+      dockerfile: infrastructure/Dockerfile
+    restart: always
+    command: >
+      sh -c "uvicorn app.main:app --host 0.0.0.0 --port 8080 --workers 4"
+    ports:
+      - 80:8080
+    env_file:
+      - .env
