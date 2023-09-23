@@ -1,6 +1,9 @@
-from pydantic import BaseSettings
+from dotenv import load_dotenv
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from app.core.constants.base import Environment
+
+load_dotenv()
 
 
 class Settings(BaseSettings):
@@ -8,9 +11,18 @@ class Settings(BaseSettings):
     app_description: str = "Service for creating cadastral numbers"
     secret: str = "where is my money lebowski"
     environment: Environment = Environment.LOCAL
+    redis_password: str
+    redis_host: str
+    redis_port: str
+    celery_redis_db: str
 
-    class Config:
-        env_file = ".env"
+    @property
+    def celery_broker_url(self):
+        return f"redis://:{self.redis_password}@{self.redis_host}:{self.redis_port}/{self.celery_redis_db}"
+
+    @property
+    def celery_result_backend(self):
+        return f"redis://:{self.redis_password}@{self.redis_host}:{self.redis_port}/{self.celery_redis_db}"
 
     @property
     def is_prod(self):
