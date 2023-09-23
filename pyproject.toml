@@ -1,0 +1,75 @@
+[tool.poetry]
+name = "test-task-for-dom-rf"
+version = "0.1.0"
+description = ""
+authors = ["Kapkaev Andrey <kapkaew@yandex.ru>"]
+readme = "README.md"
+
+[tool.black]
+line-length = 119
+paths = "./app/"
+exclude = '''
+    ^/.github
+    | ^/infrastructure
+    | .*/migrations
+    | .*/alembic
+    | .*/settings/
+    | ^settings.py
+    | ^/venv
+    | ^/.venv
+    | ^/.env
+'''
+
+[tool.isort]
+profile = "black"
+src_paths = ["isort", "tests"]
+known_first_party = "app"
+default_section = "THIRDPARTY"
+sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+skip = [
+    "*/migrations",
+    "*/alembic",
+    "*/settings",
+    "*settings.py",
+    "./.venv",
+    "./.env",
+    "./venv",
+    "./.github",
+    "./infra",
+]
+
+[tool.pytest.ini_options]
+addopts = "--color=yes -p no:cacheprovider"
+console_output_style = "progress"
+testpaths = [
+    "./app/tests/"
+]
+python_files = [
+    "test_*.py",
+    "tests.py",
+    "*_test.py",
+]
+
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.103.1"
+pydantic = "^2.3.0"
+uvicorn = {extras = ["standart"], version = "^0.23.2"}
+python-dotenv = "^1.0.0"
+pytest = "^7.4.2"
+celery = "^5.3.4"
+redis = "^5.0.0"
+
+[tool.poetry.group.linters.dependencies]
+black = "^23.9.1"
+flake8 = "^6.1.0"
+isort = "^5.12.0"
+flake8-bugbear = "^23.9.16"
+flake8-deprecated = "^2.1.0"
+flake8-comprehensions = "^3.14.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
