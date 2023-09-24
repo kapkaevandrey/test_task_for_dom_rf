@@ -2,9 +2,7 @@ version: '3.9'
 services:
   backend:
     container_name: backend
-    build:
-      context: ..
-      dockerfile: infrastructure/Dockerfile
+    image: 15052016/cadastr_service:latest
     restart: always
     command: >
       sh -c "uvicorn app.main:app --host 0.0.0.0 --port 8080 --workers 4"
@@ -14,14 +12,12 @@ services:
       - .env
 
   celery:
-    build:
-      context: ..
-      dockerfile: infrastructure/Dockerfile
+    image: 15052016/cadastr_service:latest
     restart: always
     command: celery -A app.worker.celery worker --loglevel=info
     depends_on:
       - backend
-      - redis
+      - redis_db
     env_file:
       - .env
 
