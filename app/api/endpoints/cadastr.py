@@ -1,6 +1,6 @@
 from http import HTTPStatus
 
-from celery.states import FAILURE, SUCCESS
+from celery.states import SUCCESS
 from fastapi import APIRouter, responses
 
 from app.api.schemas.cadastr import CadastrServiceResponse
