@@ -1,6 +1,5 @@
 import asyncio
 import random
-from typing import Any, Dict
 
 from app.core.settings import settings
 from app.services.clients.base import BaseCadastrServiceClient
@@ -9,10 +8,10 @@ from app.services.clients.base import BaseCadastrServiceClient
 class CadastrServiceClient(BaseCadastrServiceClient):
     async def calculate(
         self,
-        cadastr_numbder: str,
+        cadastr_number: str,
         latitude: float,
         longitude: float,
-    ) -> Any:
+    ) -> dict:
         pass
 
 
@@ -24,9 +23,9 @@ class FakeCadastrServiceClient(BaseCadastrServiceClient):
         cadastr_number: str,
         latitude: float,
         longitude: float,
-    ) -> Dict[Any]:
+    ) -> dict:
         await asyncio.sleep(random.randint(*self.TIME_SECOND_RANGE))
         return dict(cadastr_number=cadastr_number, latitude=latitude, longitude=longitude)
 
 
-cadastr_client = CadastrServiceClient() if settings.is_prod else FakeCadastrServiceClient()
+cadastr_client = CadastrServiceClient if settings.is_prod else FakeCadastrServiceClient()
