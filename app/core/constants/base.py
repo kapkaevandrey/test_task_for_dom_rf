@@ -3,6 +3,7 @@ from enum import IntEnum, StrEnum
 
 class Environment(StrEnum):
     LOCAL = "LOCAL"
+    TEST = "TEST"
     PROD = "PROD"
 
 
