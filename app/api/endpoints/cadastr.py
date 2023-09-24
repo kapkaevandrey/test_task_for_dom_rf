@@ -1,12 +1,12 @@
 from http import HTTPStatus
-from uuid import uuid4
 
-from celery.result import AsyncResult
-from fastapi import APIRouter
-from fastapi.responses import JSONResponse
+from celery.states import FAILURE, SUCCESS
+from fastapi import APIRouter, responses
 
-from app.api.schemas.cadastr import CadastrDataSchema, CadastrServiceResponse
-from app.worker import create_task
+from app.api.schemas.cadastr import CadastrServiceResponse
+from app.core.schemas import CadastrCalcResultSchema, CadastrDataSchema
+from app.tasks import calculate_cadastr_data
+from app.worker import celery
 
 router = APIRouter()
 
@@ -15,13 +15,13 @@ router = APIRouter()
 async def import_folders_and_files(
     items_data: CadastrDataSchema,
 ) -> CadastrServiceResponse:
-    task_id = uuid4()
-    create_task.delay(task_id)
-    return CadastrServiceResponse(result_id=task_id)
+    task = calculate_cadastr_data.delay(items_data.model_dump())
+    return CadastrServiceResponse(result_id=task.id)
 
 
 @router.get("/cadastr/result/{task_id}")
-def get_status(task_id):
-    task_result = AsyncResult(task_id)
-    result = {"task_id": task_id, "task_status": task_result.status, "task_result": task_result.result}
-    return JSONResponse(result)
+async def get_status(task_id):
+    task_result = celery.AsyncResult(task_id)
+    if task_result.status == SUCCESS:
+        return CadastrCalcResultSchema(**task_result.result)
+    return responses.JSONResponse({"task_status": task_result.status}, status_code=HTTPStatus.OK)

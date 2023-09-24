@@ -1,13 +1,12 @@
 from abc import ABCMeta, abstractmethod
-from typing import Any, Dict
 
 
 class BaseCadastrServiceClient(metaclass=ABCMeta):
     @abstractmethod
     async def calculate(
         self,
-        cadastaral_numbder: str,
+        cadastr_number: str,
         latitude: float,
         longitude: float,
-    ) -> Dict[Any]:
+    ) -> dict:
         raise NotImplementedError("This method must be implemented")
