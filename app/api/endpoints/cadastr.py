@@ -20,8 +20,8 @@ async def import_folders_and_files(
 
 
 @router.get("/cadastr/result/{task_id}")
-async def get_status(task_id):
+async def get_status(task_id: str) -> CadastrCalcResultSchema:
     task_result = celery.AsyncResult(task_id)
     if task_result.status == SUCCESS:
-        return CadastrCalcResultSchema(**task_result.result)
-    return responses.JSONResponse({"task_status": task_result.status}, status_code=HTTPStatus.OK)
+        return CadastrCalcResultSchema(result=task_result.result, calculated=True)
+    return CadastrCalcResultSchema(calculated=False)

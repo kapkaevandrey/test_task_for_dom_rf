@@ -32,4 +32,3 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
-settings.redis_host = "localhost" if settings.environment == Environment.LOCAL else settings.redis_host

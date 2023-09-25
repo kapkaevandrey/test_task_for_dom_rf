@@ -91,16 +91,17 @@ cp .env.example .env
 
 ```shell
 sudo docker-compose --env-file .env -f infrastructure/docker-compose.local.yaml up --build
-uvicron app.main:app --reload
+uvicorn app.main:app --reload
 ```
 
 **_Примечание:_** при локальном запуске, когда часть сервисов работает в контейнере, а основное приложение запущено
-локально убедитесь, что в переменных окружения - `ENVIRONMENT` установлено значение `ENVIRONMENT=localhost`.
-Это связано с тем, что Redis развёрнут в контейнере для нашего сервиса на хосте 127.0.0.1 или **localhost**.
-Также при установке `ENVIRONMENT=localhost` некторые внешние сервисы будут заменены фейковыми классами.
+локально убедитесь, что в переменных окружения - `REDIS_HOST` установлено значение `REDIS_HOST=localhost`.
+Это связано с тем, что Redis развёрнут в контейнере для нашего сервиса на хосте 127.0.0.1 или **localhost**, 
+и соответственно это позволит осуществлять наиболее простое взаимодействие локального сервиса с основным
 
 Чтобы развернуть сервис в режиме тестирования или Продакшн:
 Установите переменной `ENVIRONMENT` значение `TEST` или `PROD` соответственно расположите рядом в docker-compose файлом, файл `.env`.
+В данном файле `REDIS_HOST=<redis_container_name>` т.к. все сервисы будут работать в одной сети.
 ```shell
 sudo docker-compose --env-file .env -f infrastrucure/docker-compose.yaml up
 ```

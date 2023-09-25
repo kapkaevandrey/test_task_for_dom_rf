@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel, Field
 
 from app.core.constants.base import Latitude, Longitude
@@ -10,5 +12,6 @@ class CadastrDataSchema(BaseModel):
     longitude: float = Field(le=Longitude.MAX, ge=Longitude.MIN)
 
 
-class CadastrCalcResultSchema(CadastrDataSchema):
+class CadastrCalcResultSchema(BaseModel):
+    result: Optional[dict] = None
     calculated: bool = True
