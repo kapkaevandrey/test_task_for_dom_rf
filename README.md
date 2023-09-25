@@ -3,6 +3,6 @@
 ___________________________________________________
 [![linting and testing](https://github.com/kapkaevandrey/test_task_for_dom_rf/actions/workflows/ci.yaml/badge.svg)](https://github.com/kapkaevandrey/test_task_for_dom_rf/actions/workflows/ci.yaml)
 
-## 1. [SQL](sql_part.md)
-## 2. [Service](service_part.md)
+## 1. [SQL](docs/sql_part.md)
+## 2. [Service](docs/service_part.md)
 ___________________________________________________

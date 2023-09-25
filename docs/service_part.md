@@ -63,7 +63,7 @@ poetry config --list
 poetry install
 ```
 
-Если работа с poetry вам не нравится, вы можете воспользоваться стандартным файлом [requirements.txt](requirements.txt).
+Если работа с poetry вам не нравится, вы можете воспользоваться стандартным файлом [requirements.txt](../requirements.txt).
 
 ### Настройка переменных окружения<a name="branches"></a>
 
