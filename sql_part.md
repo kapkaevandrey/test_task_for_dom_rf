@@ -46,9 +46,17 @@ WHERE paid_num = 2
 - долю клиентов, которые «оттекли» в каждом месяце.
 
 **Решение:**
-```SQL
-
+```sql
+SELECT 
+    report_month,
+    COUNT(DISTINCT client_id) AS active_clients_count,
+    CAST(
+        (COUNT(DISTINCT client_id) - LEAD(COUNT(DISTINCT client_id), 3, 0) OVER (ORDER BY report_month)) AS FLOAT
+    ) / COUNT(DISTINCT client_id) AS not_active_clients_rate
+FROM active_clients
+GROUP BY report_month;
 ```
+
 ___________________________________________________
 ### Задача 4
 **Как ускорить выполнение скрипта SQL?**
@@ -158,3 +166,38 @@ FROM a LEFT JOIN b ON a.code=b.code AND b.name IS NOT NULL
 | second | *NULL* |
 | third  | third  |
 | four   | *NULL* |
+
+
+### Задача 8
+Схема существующей таблицы приведена ниже:  
+
+![table_schema](imgs/tables.jpg)
+
+1. **Выбрать все кадастровые номера по дате добавления. Новые вначале**
+> ```sql
+> SELECT id, cadastral_number, add_date
+> FROM cadastral_numbers
+> ORDER BY add_date DESC
+> ```
+
+2. **Выбрать список домов с кадастровыми номерами**
+> ```sql
+> SELECT house, cadastral_number
+> FROM 
+>    houses INNER JOIN cadastral_numbers 
+>    ON cadastral_numbers.id = houses.cadastral_number_id
+> ```
+
+3. **Сколько квартир в каждом доме, какой номер максимальной и минимальной**
+> ```sql
+> SELECT house, flats_amount, max_flat_number, min_flat_number
+> FROM houses INNER JOIN(
+>    SELECT 
+>        house_id, 
+>        COUNT(flat_number) AS flats_amount,
+>        MAX(CAST(REPLACE(flat_number, "№", "") AS INTEGER)) AS max_flat_number,
+>        MIN(CAST(REPLACE(flat_number, "№", "") AS INTEGER)) AS min_flat_number
+>    FROM flats
+>    GROUP BY house_id
+>    ) ON houses.id = house_id
+> ```
